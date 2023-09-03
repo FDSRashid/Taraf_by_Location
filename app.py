@@ -18,7 +18,6 @@ geodf = geopandas.GeoDataFrame(merged_geo, geometry= 'Coordinates').drop(['geome
 
 
 taraf_s = taraf_s.sort_values(['City', 'Year'], ascending=True)
-
 cities = taraf_s['City'].unique().tolist()
 min_year = int(taraf_s['Year'].min())
 max_year = int(taraf_s['Year'].max())
@@ -26,12 +25,14 @@ max_year = int(taraf_s['Year'].max())
 
 def plot_taraf_map(citi = ['المدينه', 'بغداد', 'كوفة', 'بصرة'], min_year = 0, max_year = 400):
   filtered = geodf[geodf['City'].isin(citi) & (geodf['Year'] >= min_year) & (geodf['Year'] <= max_year)]
+  temp = filtered[['City', 'Taraf']].groupby('City').sum().join(filtered[['City', 'Coordinates']].set_index('City'))
+  filtered = geopandas.GeoDataFrame(temp, geometry= 'Coordinates').reset_index()
   fig = px.scatter_geo(data_frame = filtered, lat = filtered.geometry.y, lon = filtered.geometry.x, size = 'Taraf', color = 'City', title = 'Number of Tarafs in Place')
   fig.update_layout(title_font_color = 'red', title_x = .5)
-
-
-
   return fig
+
+
+
 
 with gr.Blocks() as demo:
   Places = gr.Dropdown(choices = cities, value = ['المدينه', 'بغداد', 'كوفة', 'بصرة'], multiselect=True, label = 'Location')

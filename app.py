@@ -1,5 +1,5 @@
 import numpy as np
-import gradio
+import gradio as gr
 import os
 import pandas as pd
 from datasets import load_dataset

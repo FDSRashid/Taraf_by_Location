@@ -28,7 +28,7 @@ def plot_taraf_map(citi = ['المدينه', 'بغداد', 'كوفة', 'بصرة
   temp = filtered[['City', 'Taraf']].groupby('City').sum().join(filtered[['City', 'Coordinates']].set_index('City'))
   filtered = geopandas.GeoDataFrame(temp, geometry= 'Coordinates').reset_index()
   fig = px.scatter_geo(data_frame = filtered, lat = filtered.geometry.y, lon = filtered.geometry.x, size = 'Taraf', color = 'City', title = 'Number of Tarafs in Place')
-  fig.update_layout(title_font_color = 'red', title_x = .5)
+  fig.update_layout(title_font_color = 'red', title_x = .5, margin=dict(l=0, r=0, t=0, b=0))
   return fig
 
 
